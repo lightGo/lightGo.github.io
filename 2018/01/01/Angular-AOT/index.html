@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>Angular监控变化 - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=Angular>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">Angular监控变化</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2018-01-01</span>
+  </div>
+  <div class="post-content">
+    <h4 id="Angular2如何实时监控变化？"><a href="#Angular2如何实时监控变化？" class="headerlink" title="Angular2如何实时监控变化？"></a>Angular2如何实时监控变化？</h4><pre><code>先了解一个这样的问题，Javascript在整个运行时都可以被重写
+</code></pre><h5 id="1-覆盖浏览器的默认机制"><a href="#1-覆盖浏览器的默认机制" class="headerlink" title="1.覆盖浏览器的默认机制"></a>1.覆盖浏览器的默认机制</h5><pre><code>Angular2启动的时候会对浏览器API打低级补丁，例如AddEventListener()，会覆盖原有的方法，对原有方法进行扩展
+这样才有机会进行更改检测，并做相关处理，对于浏览器的低级API补丁，Angular2采用Zonejs来完成，这是一种通用
+的机制，我们可以为浏览器添加额外的功能，Angular2内部使用Zone来触发更改机制，还有一种可能是执行应用程序
+分析，或跟踪多个虚拟机的堆栈信息进行跟踪
+    ZoneJS对浏览器所有基础事件进行了补丁，timeOut,interval,Ajax,click,hover等等，但是它是有限制的，因为zonejs不
+支持异步浏览器API,例如indexDB的回调，这样就解释了为什么他的变化会被检测到
+</code></pre><h5 id="2-检测机制触发后是如何工作"><a href="#2-检测机制触发后是如何工作" class="headerlink" title="2.检测机制触发后是如何工作"></a>2.检测机制触发后是如何工作</h5><pre><code>Angular2启动的时候，每一个组件都有一个关联的更改检测器
+1.缺省的变更机制
+    对于模板中使用的表达式，现有值与原来的值进行比较，默认情况的检查不会做深度对比，仅仅会对使用的属性进行对比
+2.changeDetection.OnPush &amp;&amp; Immutable.js类似库
+    此种情况下引用的变更才会触发，而属性的改变不会触发，这样的检查显然是不靠谱的，所以引入了Immutable.js，来确保
+对象的不可变性，同时Angular2采用的是单向的数据流，这样就避免了angular1的双向绑定那个三重的for循环，进而提升了
+性能，Angular2的dev和生产模式下也是不同的，对于检查，在生产环境只会检查一次
+</code></pre><h5 id="3-是否可以手动关闭脏值检查-比如1秒触发一次脏值检查"><a href="#3-是否可以手动关闭脏值检查-比如1秒触发一次脏值检查" class="headerlink" title="3.是否可以手动关闭脏值检查,比如1秒触发一次脏值检查"></a>3.是否可以手动关闭脏值检查,比如1秒触发一次脏值检查</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">constructor</span>(private ref:ChangeDetectorRef)&#123;</span><br><span class="line">      ref.detach();</span><br><span class="line">       setInterval(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="keyword">this</span>.ref.detectChanges();&#125;,<span class="number">1000</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-结论"><a href="#4-结论" class="headerlink" title="4.结论"></a>4.结论</h5><pre><code>Angular2和angular1的默认检查还是有很大不同的，做了一些优化，而且在Angular2中，变化检测是可以选择的
+</code></pre>
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/Angular/">Angular</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>
