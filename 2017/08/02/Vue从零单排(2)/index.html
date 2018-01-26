@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>Vue从零单排(2) - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=Vue>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">Vue从零单排(2)</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-08-02</span>
+  </div>
+  <div class="post-content">
+    <h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p>上一篇是说Vue的指令,那么接下来就要实际搭建一个Vue的项目,可能只有指令貌似不够用,那么接下来,遇到什么<br>问题解决什么问题就可以了,其实做项目没有那么复杂,最首要的就是思路要清晰,其他的都好办</p>
+<h3 id="1-怎么搭建环境"><a href="#1-怎么搭建环境" class="headerlink" title="1.怎么搭建环境"></a>1.怎么搭建环境</h3><p>好像有一套CLI可以用</p>
+<h3 id="2-CLI"><a href="#2-CLI" class="headerlink" title="2.CLI"></a>2.CLI</h3><p>官网地址就在这里:<a href="https://www.npmjs.com/package/vue-cli" target="_blank" rel="noopener">Vue-Cli</a></p>
+<pre><code>npm install -g vue-cli
+    vue init webpack myProject
+    cd myProject
+    npm run dev
+</code></pre><p>等待的时间不是很长,就这样,一套基础的环境搭建完毕,启动之后打开 <a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a> ,发现一个问题,为什<br>么我的路由多了一个#号,那么是不是可以去掉hash路由,打开路由文件,这东西属于路由范畴的,我没有配置server,<br>那么它一定是前端路由管理的,我用的是IDEA可以直接点进去,看具体是怎么用的</p>
+<pre><code>node_modules -&gt; vue-router -&gt;router.d.ts
+    关注这段代码
+    export type RouterMode = &quot;hash&quot; | &quot;history&quot; | &quot;abstract&quot;;
+    export declare class VueRouter {
+      constructor (options?: RouterOptions);
+      app: Vue;
+      mode: RouterMode;
+      currentRoute: Route;
+    }
+    解决了,向下边这样写,默认给的路由是hash路由
+    export default new Router({
+      mode: &apos;history&apos;,
+      routes: [
+        {
+          path: &apos;/&apos;,
+          name: &apos;HelloWorld&apos;,
+          component: HelloWorld
+        }]})
+</code></pre><h3 id="3-有了基础环境-那么开始写代码"><a href="#3-有了基础环境-那么开始写代码" class="headerlink" title="3.有了基础环境,那么开始写代码"></a>3.有了基础环境,那么开始写代码</h3><p>我们新建一个路由,就叫demo,按照上边的规则,可以这样写</p>
+<pre><code>export default new Router({
+  mode: &apos;history&apos;,
+  routes: [
+    { path: &apos;/&apos;,name: &apos;HelloWorld&apos;,component: HelloWorld },
+    { path: &apos;/demo&apos;,name: &apos;demo&apos;,component: Demo }
+    ]})
+</code></pre><p>刚好用到component,那就看看吧</p>
+<h3 id="4-component属于内置组件"><a href="#4-component属于内置组件" class="headerlink" title="4.component属于内置组件"></a>4.component属于内置组件</h3><h5 id="Vue内置了五个组件-Component-transition-transition-group-keep-alive-slot"><a href="#Vue内置了五个组件-Component-transition-transition-group-keep-alive-slot" class="headerlink" title="Vue内置了五个组件,Component,transition,transition-group,keep-alive,slot"></a>Vue内置了五个组件,Component,transition,transition-group,keep-alive,slot</h5><h4 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h4><h5 id="这不就就是组件么-简单的说-我要造一台车-是不是要有轮子-那么轮子就是一个组件-组成的构件-有了轮子-套在轴承上是不是就可以滚了"><a href="#这不就就是组件么-简单的说-我要造一台车-是不是要有轮子-那么轮子就是一个组件-组成的构件-有了轮子-套在轴承上是不是就可以滚了" class="headerlink" title="这不就就是组件么!!简单的说,我要造一台车,是不是要有轮子,那么轮子就是一个组件,组成的构件,有了轮子,套在轴承上是不是就可以滚了"></a>这不就就是组件么!!简单的说,我要造一台车,是不是要有轮子,那么轮子就是一个组件,组成的构件,有了轮子,套在轴承上是不是就可以滚了</h5><h5 id="那就写一个-当访问-demo的时候我希望看到一个有数据的页面-之前学到的指令恰巧可以用在这里-没毛病"><a href="#那就写一个-当访问-demo的时候我希望看到一个有数据的页面-之前学到的指令恰巧可以用在这里-没毛病" class="headerlink" title="那就写一个,当访问/demo的时候我希望看到一个有数据的页面,之前学到的指令恰巧可以用在这里,没毛病"></a>那就写一个,当访问/demo的时候我希望看到一个有数据的页面,之前学到的指令恰巧可以用在这里,没毛病</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"hello"</span>&gt;</span><br><span class="line">   &lt;h1 v-<span class="keyword">if</span>=<span class="string">"msg"</span> @click=<span class="string">"hideMessage"</span>&gt;&#123;&#123; msg &#125;&#125;&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp"> &lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">export default &#123;</span></span><br><span class="line"><span class="regexp"> name: 'HelloWorld',</span></span><br><span class="line"><span class="regexp"> data () &#123;</span></span><br><span class="line"><span class="regexp">   return &#123;</span></span><br><span class="line"><span class="regexp">     msg: 'Welcome to Your Vue.js App'</span></span><br><span class="line"><span class="regexp">   &#125;</span></span><br><span class="line"><span class="regexp"> &#125;,</span></span><br><span class="line"><span class="regexp"> methods:&#123;</span></span><br><span class="line"><span class="regexp">    hideMessage()&#123;</span></span><br><span class="line"><span class="regexp">        this.msg = undefined;</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp"> &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br><span class="line">&lt;style scoped&gt;&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="三部分组成-template-script-style-是不是很熟悉"><a href="#三部分组成-template-script-style-是不是很熟悉" class="headerlink" title="三部分组成,template script style 是不是很熟悉"></a>三部分组成,template script style 是不是很熟悉</h5><h4 id="transition-被缓存而不销毁的组件实例-amp-transition-ground-被缓存而不销毁的组件实例"><a href="#transition-被缓存而不销毁的组件实例-amp-transition-ground-被缓存而不销毁的组件实例" class="headerlink" title="transition(被缓存而不销毁的组件实例) &amp; transition-ground(被缓存而不销毁的组件实例)"></a>transition(被缓存而不销毁的组件实例) &amp; transition-ground(被缓存而不销毁的组件实例)</h4><p>翻译一下,过渡(动画),过渡组(批量动画),这就是动画啊,不多解释了,直接上DEMO,就在刚才我们新建的component下写</p>
+<pre><code>&lt;div class=&quot;hello&quot;&gt;
+  &lt;h1 v-if=&quot;msg&quot; @click=&quot;show = !show&quot;&gt;{{ msg }}&lt;/h1&gt;
+   &lt;transition name=&quot;fade&quot;&gt;
+      &lt;p v-show=&quot;show&quot;&gt;hello&lt;/p&gt;
+    &lt;/transition&gt;
+&lt;/div&gt;
+&lt;style scoped&gt;
+   &amp;.fade-enter-active, &amp;.fade-leave-active
+     {transition: all 0.5s ease}
+   &amp;.fade-enter, &amp;.fade-leave-active
+    { opacity: 0}
+   &lt;/style&gt;
+</code></pre><h4 id="keep-alive-被缓存而不销毁的组件实例"><a href="#keep-alive-被缓存而不销毁的组件实例" class="headerlink" title="keep-alive(被缓存而不销毁的组件实例)"></a>keep-alive(被缓存而不销毁的组件实例)</h4><pre><code>&lt;div class=&quot;hello&quot;&gt;
+   &lt;keep-alive include=&quot;demo&quot;&gt;
+       这里将会缓存名字叫做demo的组件
+    &lt;/keep-alive&gt;
+   &lt;/div&gt;
+</code></pre><h4 id="Slot"><a href="#Slot" class="headerlink" title="Slot"></a>Slot</h4><p>这个是一个比较好的功能,react中并没有,不过github上边有一个react-slot包,可以拿来用</p>
+
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>
