@@ -98,8 +98,12 @@
        这里将会缓存名字叫做demo的组件
     &lt;/keep-alive&gt;
    &lt;/div&gt;
-</code></pre><h4 id="Slot"><a href="#Slot" class="headerlink" title="Slot"></a>Slot</h4><p>这个是一个比较好的功能,react中并没有,不过github上边有一个react-slot包,可以拿来用</p>
-
+</code></pre><h4 id="Slot"><a href="#Slot" class="headerlink" title="Slot"></a>Slot</h4><p>这个是一个比较好的功能,react中并没有,不过github上边有一个react-slot包,可以拿来用,其实就是一种多态思想,<br>slot可以提供这样的功能，我使用一个组件，默认我不传递props时候，它会展现一种状态，当我传递props并且<br>附带我自定义的内容时候，我希望能展示我自定义的内容,如果你学过Angular，那么就是其中的transclusion</p>
+<pre><code>&lt;my-input&gt;
+      // 我有一个input组件，我期望在我的组件后边附加一个单位
+     &lt;template slot=&quot;append&quot;&gt;美元&lt;/template&gt;
+   &lt;/my-input&gt;
+</code></pre>
   </div>
   <div class="post-footer">
     

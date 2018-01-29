@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>Vue从零单排(3) - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=Vue>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">Vue从零单排(3)</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-08-03</span>
+  </div>
+  <div class="post-content">
+    <h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p>上一篇是说Vue的内置组件,其中的slot使用的是了Vue实例中的属性，那么接下来我们就认识一下，介绍一个Vue<br>的实例属性</p>
+<h4 id="1-slots-scopedSlots"><a href="#1-slots-scopedSlots" class="headerlink" title="1.$slots $scopedSlots"></a>1.$slots $scopedSlots</h4><p>上次是说这样的一个input组件，我期望在文本后边附加单位，很常见的场景，没有给出具体的实现，那么我们现<br>在来实现这样的一个组件，可以分发内容</p>
+<pre><code>&lt;template&gt;
+     &lt;input type=&quot;text&quot;&gt;
+     &lt;span  v-if=&quot;$slots.append&quot;&gt;
+         &lt;slot name=&quot;append&quot;&gt;&lt;/slot&gt;
+     &lt;/span&gt;
+    &lt;/template&gt;
+    &lt;script&gt;
+         //为什么可以直接使用$slots，因为它是绑定在Vue实例上的属性 vm.$slots
+         //方便我们拿到我们传递的slot属性
+    &lt;/script&gt;
+    &lt;style&gt;
+    &lt;/style&gt;
+</code></pre><p>$scopedSlots与之类似，只不过是用来访问作用域slot, $slots可以说更宽泛一些</p>
+<h4 id="2-refs-children-parent-root-el"><a href="#2-refs-children-parent-root-el" class="headerlink" title="2.$refs $children $parent $root $el"></a>2.$refs $children $parent $root $el</h4><p>这五个实例属性，都是与DOM操作相关的，所以把他们放在一起，这样好记忆也好理解</p>
+<pre><code>&lt;template id=&quot;parent&quot;&gt;
+     &lt;div&gt;
+         &lt;child ref=&quot;childOne&quot;&gt;&lt;/child&gt;
+         &lt;child ref=&quot;childTwo&quot;&gt;&lt;/child&gt;
+     &lt;/div&gt;
+    &lt;/template&gt;
+    &lt;script&gt;
+        // 查找 一个人的儿子，一种是直接看他的儿子是谁，另一种是看他的下一辈有中有谁的名字是XXX
+        // 就这样，在父组件中访问子组件的DOM，有两种方式，
+        this.$child[0] === this.$ref.childOne //true
+        this.$child[1] === this.$ref.childTwo //true
+        // 相同的，找组件的父元素DOM
+        this.$parent
+        // 同样的,当前组件树的根
+         this.$root
+        // 同样的,Vue的根DOM元素
+         this.$el
+    &lt;/script&gt;
+    &lt;style&gt;
+    &lt;/style&gt;
+</code></pre><p>这四个实例主要是用来操作相关的DOM</p>
+<h4 id="3-props-data"><a href="#3-props-data" class="headerlink" title="3.$props $data"></a>3.$props $data</h4><p>$props是组件传入的属性，$data是当前组件使用的初始化数据</p>
+<pre><code>&lt;template&gt;
+ &lt;my-input :data=&quot;someObj&quot;&gt;
+&lt;/template&gt;
+&lt;script&gt;
+     export default {
+         data() {
+             this.initializeData = {}
+         },
+         props:{someObj}
+     }
+&lt;/script&gt;
+</code></pre><h4 id="4-isServer-options"><a href="#4-isServer-options" class="headerlink" title="4.$isServer $options"></a>4.$isServer $options</h4><pre><code>&lt;script&gt;
+     // 判断当前实例是否运行在服务器(比如服务端渲染用到)
+    this.$isServer
+    // Vue实例的初始化选项
+    this.$options
+&lt;/script&gt;
+</code></pre><h4 id="5-attrs-listeners"><a href="#5-attrs-listeners" class="headerlink" title="5.$attrs $listeners"></a>5.$attrs $listeners</h4><p>这两个是作为创建更高层次的组件时使用</p>
+<pre><code>&lt;script&gt;
+     // 父作用域中不作为 prop 被识别 (且获取) 的特性绑定
+    this.$attrs
+    // 父作用域中的事件监听器
+    this.$listeners
+ &lt;/script&gt;
+</code></pre>
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>
