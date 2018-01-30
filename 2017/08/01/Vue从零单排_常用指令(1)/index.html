@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>Vue从零单排_常用指令(1) - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=Vue>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">Vue从零单排_常用指令(1)</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-08-01</span>
+  </div>
+  <div class="post-content">
+    <h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p>最近因为公司整体业务方向调整，项目组频繁波动 ～ ～ ～ ，经过了慎重的考虑，我们决定要用Vue来代替原有<br>的Angular2技术栈，我们这些老油条是无所谓的，什么轮子都能跑，但是Angular2不适合新人，学习曲线太陡<br>峭，不利于新人培养，以此为背景，我将记录下这一段的学习历程</p>
+<h3 id="1-怎么学"><a href="#1-怎么学" class="headerlink" title="1.怎么学"></a>1.怎么学</h3><p>一贯的原则都是先上官网，直接撸，顺便记录下，好做培训<a href="https://cn.vuejs.org" target="_blank" rel="noopener">官网地址</a></p>
+<h3 id="2-DEMO"><a href="#2-DEMO" class="headerlink" title="2.DEMO"></a>2.DEMO</h3><h5 id="从官网上直接找的一个DEMO，其实就是展示一个字符串"><a href="#从官网上直接找的一个DEMO，其实就是展示一个字符串" class="headerlink" title="从官网上直接找的一个DEMO，其实就是展示一个字符串"></a>从官网上直接找的一个DEMO，其实就是展示一个字符串</h5><pre><code>&lt;div id=&quot;app&quot;&gt;{{ message }}&lt;/div&gt;
+    var app = new Vue({
+      el: &apos;#app&apos;,
+      data: { message: &apos;Hi!&apos; }
+    });
+</code></pre><h5 id="之前也有接触过EmberJS和Angular1-Angular2，大致看了一下，有太多的似曾相识"><a href="#之前也有接触过EmberJS和Angular1-Angular2，大致看了一下，有太多的似曾相识" class="headerlink" title="之前也有接触过EmberJS和Angular1,Angular2，大致看了一下，有太多的似曾相识"></a>之前也有接触过EmberJS和Angular1,Angular2，大致看了一下，有太多的似曾相识</h5><h3 id="3-一点交互"><a href="#3-一点交互" class="headerlink" title="3.一点交互"></a>3.一点交互</h3><h5 id="一个系统与用户的交流是非常重要的，那么我们就在DEMO的基础上来添加一些交互"><a href="#一个系统与用户的交流是非常重要的，那么我们就在DEMO的基础上来添加一些交互" class="headerlink" title="一个系统与用户的交流是非常重要的，那么我们就在DEMO的基础上来添加一些交互"></a>一个系统与用户的交流是非常重要的，那么我们就在DEMO的基础上来添加一些交互</h5><pre><code>&lt;div id=&quot;app&quot; @click=&quot;resetMessage&quot; &gt;{{ message }}&lt;/div&gt;
+    var app = new Vue({
+      el: &apos;#app&apos;,
+      data: { message: &apos;Hi!&apos; },
+      methods: { resetMessage(){ this.message = &apos;我被点击了&apos;;}}
+    });
+</code></pre><h5 id="click就是我们所添加的第一个交互，完整的写法是这样的＝-gt-v-on-click-“resetMessage”-当Div被点击的时候，"><a href="#click就是我们所添加的第一个交互，完整的写法是这样的＝-gt-v-on-click-“resetMessage”-当Div被点击的时候，" class="headerlink" title="@click就是我们所添加的第一个交互，完整的写法是这样的＝&gt; v-on:click = “resetMessage”, 当Div被点击的时候，"></a>@click就是我们所添加的第一个交互，完整的写法是这样的＝&gt; v-on:click = “resetMessage”, 当Div被点击的时候，</h5><h5 id="我们改变页面上的message-怎么样是不是很简单，于此相同的我们也有一些其他的原生DOM事件，比如：click"><a href="#我们改变页面上的message-怎么样是不是很简单，于此相同的我们也有一些其他的原生DOM事件，比如：click" class="headerlink" title="我们改变页面上的message,怎么样是不是很简单，于此相同的我们也有一些其他的原生DOM事件，比如：click,"></a>我们改变页面上的message,怎么样是不是很简单，于此相同的我们也有一些其他的原生DOM事件，比如：click,</h5><h5 id="hover-mouseEnter-mouseOut-focus-keyUp-keyDown-change…-，那么这个v-on到底是什么呢，就是Vue自身提供"><a href="#hover-mouseEnter-mouseOut-focus-keyUp-keyDown-change…-，那么这个v-on到底是什么呢，就是Vue自身提供" class="headerlink" title="hover,mouseEnter,mouseOut,focus,keyUp,keyDown,change… ，那么这个v-on到底是什么呢，就是Vue自身提供"></a>hover,mouseEnter,mouseOut,focus,keyUp,keyDown,change… ，那么这个v-on到底是什么呢，就是Vue自身提供</h5><h5 id="指令集中的一个"><a href="#指令集中的一个" class="headerlink" title="指令集中的一个"></a>指令集中的一个</h5><h3 id="4-指令"><a href="#4-指令" class="headerlink" title="4.指令"></a>4.指令</h3><h5 id="官方的API给出了14个指令，v-text-v-html-v-show-v-if-v-else-v-else-if…我们挑几个看一下，还是那段DEMO"><a href="#官方的API给出了14个指令，v-text-v-html-v-show-v-if-v-else-v-else-if…我们挑几个看一下，还是那段DEMO" class="headerlink" title="官方的API给出了14个指令，v-text,v-html,v-show,v-if,v-else,v-else-if…我们挑几个看一下，还是那段DEMO"></a>官方的API给出了14个指令，v-text,v-html,v-show,v-if,v-else,v-else-if…我们挑几个看一下，还是那段DEMO</h5><h5 id="v-text很明显就可以看到是做什么的，用来展示信息。不多说"><a href="#v-text很明显就可以看到是做什么的，用来展示信息。不多说" class="headerlink" title="v-text很明显就可以看到是做什么的，用来展示信息。不多说"></a>v-text很明显就可以看到是做什么的，用来展示信息。不多说</h5><pre><code>&lt;div id=&quot;app&quot; v-text=&quot;message&quot; &gt;&lt;/div&gt;
+    &lt;div id=&quot;appDemo&quot; &gt;{{ message }}&lt;/div&gt;
+        var app = new Vue({
+          el: &apos;#app&apos;,
+          data: { message: &apos;Hi!&apos; }
+        });
+</code></pre><h5 id="v-html-其实就是更新元素的innerHtml-不会作为Vue模板进行编译"><a href="#v-html-其实就是更新元素的innerHtml-不会作为Vue模板进行编译" class="headerlink" title="v-html 其实就是更新元素的innerHtml,不会作为Vue模板进行编译"></a>v-html 其实就是更新元素的innerHtml,不会作为Vue模板进行编译</h5><pre><code>&lt;div id=&quot;app&quot; v-html=&quot;message&quot; &gt;&lt;/div&gt;
+    &lt;div id=&quot;appDemo&quot; &gt;{{ message }}&lt;/div&gt;
+        var app = new Vue({
+          el: &apos;#app&apos;,
+          data: { message: &apos;Hi!&apos; }
+        });
+</code></pre><h5 id="v-show-amp-amp-v-if-v-if-v-else-if-v-else-展示与隐藏"><a href="#v-show-amp-amp-v-if-v-if-v-else-if-v-else-展示与隐藏" class="headerlink" title="v-show &amp;&amp; v-if(v-if v-else-if v-else) 展示与隐藏"></a>v-show &amp;&amp; v-if(v-if v-else-if v-else) 展示与隐藏</h5><h5 id="两者是有区别的-v-show是控制DOM的display属性-而v-if是直接创建或销毁组件或者模板"><a href="#两者是有区别的-v-show是控制DOM的display属性-而v-if是直接创建或销毁组件或者模板" class="headerlink" title="两者是有区别的,v-show是控制DOM的display属性,而v-if是直接创建或销毁组件或者模板"></a>两者是有区别的,v-show是控制DOM的display属性,而v-if是直接创建或销毁组件或者模板</h5><pre><code>&lt;div id=&quot;app&quot; v-if=&quot;message&quot; &gt;&lt;/div&gt;
+    &lt;div id=&quot;app&quot; v-show=&quot;message&quot; &gt;&lt;/div&gt;
+    &lt;div id=&quot;appDemo&quot; &gt;{{ message }}&lt;/div&gt;
+        var app = new Vue({
+          el: &apos;#app&apos;,
+          data: { message: true }
+        });
+</code></pre><h5 id="v-for列表渲染"><a href="#v-for列表渲染" class="headerlink" title="v-for列表渲染"></a>v-for列表渲染</h5><pre><code>&lt;div id=&quot;app&quot;&gt;&lt;span  v-for=&quot;m in message&quot; :key=&quot;m&quot;&gt;{{m}}&lt;/span&gt;&lt;/div&gt;
+    &lt;div id=&quot;appDemo&quot; &gt;{{ message }}&lt;/div&gt;
+        var app = new Vue({
+          el: &apos;#app&apos;,
+          data: { message: [1,2,3] }
+        });
+</code></pre><h5 id="v-model绑定在组件-select-输入框上-双向绑定"><a href="#v-model绑定在组件-select-输入框上-双向绑定" class="headerlink" title="v-model绑定在组件,select,输入框上,双向绑定"></a>v-model绑定在组件,select,输入框上,双向绑定</h5><pre><code>&lt;input id=&quot;app&quot; v-model=&quot;message&quot;&gt;
+    &lt;div id=&quot;appDemo&quot; &gt;{{ message }}&lt;/div&gt;
+        var app = new Vue({
+          el: &apos;#app&apos;,
+          data: { message: &apos;&apos; }
+        });
+</code></pre><h5 id="v-once适合用于提升性能-只渲染一次-重新渲染的时候会视为静态内容-不进行编译渲染"><a href="#v-once适合用于提升性能-只渲染一次-重新渲染的时候会视为静态内容-不进行编译渲染" class="headerlink" title="v-once适合用于提升性能,只渲染一次,重新渲染的时候会视为静态内容,不进行编译渲染"></a>v-once适合用于提升性能,只渲染一次,重新渲染的时候会视为静态内容,不进行编译渲染</h5><pre><code>&lt;div id=&quot;app&quot; v-once&gt;{{message}}&lt;/div&gt;
+    &lt;div id=&quot;appDemo&quot; &gt;{{ message }}&lt;/div&gt;
+        var app = new Vue({
+          el: &apos;#app&apos;,
+          data: { message: &apos;不变&apos; }
+        });
+</code></pre><h5 id="v-bind动态绑定属性"><a href="#v-bind动态绑定属性" class="headerlink" title="v-bind动态绑定属性"></a>v-bind动态绑定属性</h5><pre><code>&lt;div id=&quot;app&quot; v-bind:title = &quot;message&quot;&gt;{{message}}&lt;/div&gt;
+    &lt;div id=&quot;appDemo&quot; &gt;{{ message }}&lt;/div&gt;
+        var app = new Vue({
+          el: &apos;#app&apos;,
+          data: { message: &apos;title&apos; }
+        });
+</code></pre><h5 id="v-pre-跳过编译-v-cloak-最后编译"><a href="#v-pre-跳过编译-v-cloak-最后编译" class="headerlink" title="v-pre(跳过编译)  v-cloak(最后编译)"></a>v-pre(跳过编译)  v-cloak(最后编译)</h5><pre><code>&lt;div id=&quot;app&quot; v-pre&gt;{{message}}&lt;/div&gt;
+    &lt;div id=&quot;app&quot; v-clock&gt;{{message}}&lt;/div&gt;
+</code></pre>
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>

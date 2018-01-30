@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>Vue从零单排_组件通信(5) - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=Vue>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">Vue从零单排_组件通信(5)</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-08-05</span>
+  </div>
+  <div class="post-content">
+    <h2 id="Vue组件通信"><a href="#Vue组件通信" class="headerlink" title="Vue组件通信"></a>Vue组件通信</h2><p>上面几篇介绍了一些基础的概念,但是实际项目中往往会用到更多,接下来会介绍一些项目中会用到的点</p>
+<h3 id="1-基础组件通信"><a href="#1-基础组件通信" class="headerlink" title="1.基础组件通信"></a>1.基础组件通信</h3><p>经常我们会遇到这样的情况,当我们操作一个component的时候,我们需要让另外的component知道,我<br>操作了当前的component,方便后续组件做一些操作,比如:刷新</p>
+<h4 id="1-1-父-gt-子-组件的通信"><a href="#1-1-父-gt-子-组件的通信" class="headerlink" title="1.1 父 =&gt;子 组件的通信"></a>1.1 父 =&gt;子 组件的通信</h4><p>我们定义component的时候,有时候需要传递一些属性,这样方便我们更好的控制组件，比如说我的组件<br>是否展示一个DOM区域,那么此时你可能会用到props,这就是父子通信的一种,在父组件中定义一些属性<br>告诉子组件 ,我需要展示哪些东西,比如:我们的Table组件,需要一个数据源来遍历出表格</p>
+<pre><code>&lt;template&gt;
+    &lt;div&gt;
+        &lt;child-component :data=&quot;formData&quot;&gt;&lt;/child-component&gt;
+    &lt;/div&gt;
+    &lt;/template&gt;
+    &lt;script&gt;
+        created(){
+            this.formData=[1,2,3];
+        }
+    &lt;/script&gt;
+</code></pre><h4 id="1-2-子-gt-父-组件的通信"><a href="#1-2-子-gt-父-组件的通信" class="headerlink" title="1.2  子 =&gt; 父 组件的通信"></a>1.2  子 =&gt; 父 组件的通信</h4><p>为了增加我们的控制力度,我们有时候需要一些操作,我的子组件某一个属性发生变化,我需要让父组件<br>知道有这么一件事情,比如:当分页组件点击的时候,我需要更新父组件中的Table组件的数据,那么我就<br>需要去跟父组件之间进行通信,此时你可以这样做,父组件就可以收到子组件的信息,做相关操作</p>
+<pre><code>&lt;!-- child-component --&gt;
+&lt;template&gt;
+    &lt;div @click=sendMessage&gt;
+
+    &lt;/div&gt;
+    &lt;/template&gt;
+    &lt;script&gt;
+        sendMessage(){
+            this.$emit(&apos;sendMessage&apos;,&apos;我被点击&apos;)
+        }
+    &lt;/script&gt;
+  &lt;!-- parent-component --&gt;
+    &lt;template&gt;
+        &lt;div&gt;
+            &lt;child-component v-on:sendMessage=&quot;receiveMessage&quot;&gt;&lt;/child-component&gt;
+        &lt;/div&gt;
+        &lt;/template&gt;
+        &lt;script&gt;
+            receiveMessage(obj){
+                console.log(obj);
+            }
+        &lt;/script&gt;
+</code></pre><h4 id="1-3-兄弟组件的通信"><a href="#1-3-兄弟组件的通信" class="headerlink" title="1.3  兄弟组件的通信"></a>1.3  兄弟组件的通信</h4><p>其实学会了父子组件的通信,那么兄弟间的通信就水到渠成了,其实就是这样的关系 子 =&gt; 父 =&gt;子</p>
+<h3 id="2-升级版组件通信"><a href="#2-升级版组件通信" class="headerlink" title="2.升级版组件通信"></a>2.升级版组件通信</h3><p>如果你写的多了,那么你应该会觉得有些麻烦,尤其是层级过多的父子组件,这个时候我们有这样的解决方案,<br>那就是eventhub事件中心,你不需要去在template上绑定事件,只需要发送和接收</p>
+<pre><code>//根注册
+    data: {
+        eventHub: new Vue()
+    }
+    //发送方
+    this.$root.eventHub.$emit(&apos;sendMessage&apos;, data)
+    //接收方
+    this.$root.eventHub.$on(&apos;sendMessage&apos;, Func)
+</code></pre><p>这里可能会有这样的一个问题，比如说你有两个页面组件的时候,在页面A发送事件,在页面B接收事件,这个时<br>候有可能会发生接收不到的情况,为什么?因为生命周期的问题,按照Vue的生命周期,销毁事件是在当前组件完<br>全判定为未引用时候才会收回,上面的情况下,B页面组件的创建是在A页面组件销毁之前的,所以需要注意,而且<br>不要重名</p>
+<h3 id="3-进阶版组件通信"><a href="#3-进阶版组件通信" class="headerlink" title="3.进阶版组件通信"></a>3.进阶版组件通信</h3><p>如果有使用过react的同学可能会说,我们react用redux,说白了,其实就是状态机,无论是Vuex还是Redux其<br>实本质上都是一样的,就是状态管理,最早出现的是Flux,后边围绕着Flux出现了很多的前端状态管理架构思想,<br>专门解决软件的结构问题,中小型项目不建议使用,因为还要额外的安装包,引入一些列的概念,不要想的太神秘,<br>工具不就是拿来用的么,我感觉暂时用不到,用到的时候直接看API</p>
+
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>

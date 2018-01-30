@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>Vue从零单排_生命周期(4) - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=Vue>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">Vue从零单排_生命周期(4)</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-08-04</span>
+  </div>
+  <div class="post-content">
+    <h2 id="Vue生命周期"><a href="#Vue生命周期" class="headerlink" title="Vue生命周期"></a>Vue生命周期</h2><p>重新认识一下，Vue整个的生命周期，无论学什么框架，都需要了解整个的生命周期，这对于我们的开发是十分重<br>要的，让我们知道，什么时候可以做什么事</p>
+<h4 id="1-new-Vue"><a href="#1-new-Vue" class="headerlink" title="1.new Vue()"></a>1.new Vue()</h4><pre><code>我们的整个Vue应用都是从这里开始的，在这里我们可以选择初始化参数，可以配置相应的路由，可以决定我们在
+    哪个DOM元素上来初始化我们的应用，一个Vue项目就从这里开始，我们将通过几个方法来认识一下Vue
+</code></pre><h4 id="2-beforeCreate"><a href="#2-beforeCreate" class="headerlink" title="2.beforeCreate"></a>2.beforeCreate</h4><p>此时的组件实例刚被创建，我们赋予组件的初始数据，data还没有运行，具体有哪些应用场景，这个才是我关<br>心的问题，我们以前写JQuery的时候会有这样的一段代码，用来判断是否页面加载完毕，举个栗子：</p>
+<pre><code>$(function(){ alert(&apos;页面加载完毕&apos;)})
+    那么换成Vue了，beforeCreate就做了同样的事情
+</code></pre><h4 id="2-created"><a href="#2-created" class="headerlink" title="2.created"></a>2.created</h4><p>此时的组件实例刚被创建完成，组件实例中的属性已经计算完毕，但是DOM还未生成，这个时候就是我们的<br>create函数所处的阶段，那么此时，我们可以做什么呢，举个栗子：</p>
+<pre><code>我们的页面经常需要从后台获取数据，我们会给我们的组件赋一些初始值，等到后续数据载入后替换，那就是这里了
+    created(){ setTimeOut(function(){this.initData = { name:1, value:2 }})}
+</code></pre><h4 id="3-beforeMount"><a href="#3-beforeMount" class="headerlink" title="3.beforeMount"></a>3.beforeMount</h4><p>此时的组件实例刚被创建完成，组件实例中的属性已经计算完毕，DOM已经首次生成，但是还没有挂载到具体的<br>DOM,这个时候就是我们的beforeMount函数所处的阶段，那么此时，我们可以做什么呢，举个栗子：</p>
+<pre><code>此时Vue的根DOM元素已经被初始化，在这里，我们拿到我们的虚拟DOM，虽然现在看起来像是占位符
+    beforeMount(){
+        console.log(this.$el); // &lt;div id=&quot;root&quot;&gt;{{hello}}&lt;/div&gt;
+    }
+</code></pre><h4 id="4-mounted"><a href="#4-mounted" class="headerlink" title="4.mounted"></a>4.mounted</h4><p>此时的组件实例刚被创建完成，组件实例中的属性已经计算完毕，DOM已经首次生成，已经挂载到具体的DOM,<br>这个时候就是我们的mounted函数所处的阶段，需要注意的一点就是，不一定所有的子组件都也都一起被挂载<br>那么此时，我们可以做什么呢，举个栗子：</p>
+<pre><code>此时Vue的根DOM元素已经被初始化，在这里，我们可以拿到真实的DOM
+    mounted(){
+        console.log(this.$el); // &lt;div id=&quot;root&quot;&gt;你好&lt;/div&gt;
+    }
+</code></pre><h4 id="5-beforeUpdate"><a href="#5-beforeUpdate" class="headerlink" title="5.beforeUpdate"></a>5.beforeUpdate</h4><p>此时的组件实例刚被创建完成，组件实例中的属性已经计算完毕，DOM已经首次生成，已经挂载到具体的DOM,<br>在此之后我们的数据发生了变化，有变化还没有及时重新渲染之前，这个时候就是我们的beforeUpdate函数</p>
+<h4 id="6-updated"><a href="#6-updated" class="headerlink" title="6.updated"></a>6.updated</h4><p>此时的组件实例刚被创建完成，组件实例中的属性已经计算完毕，DOM已经首次生成，已经挂载到具体的DOM,<br>在此之后我们的数据发生了变化，DOM已经重新渲染之后，这个时候就是我们的updated函数调用的触发点<br>那么此时，我们可以做什么呢，举个栗子：</p>
+<pre><code>我们的页面有这样一个滚动视窗，我们需要知道初始化之后的一个按钮的展示位置，如果超过了某一个height
+那么动态的计算展示窗体的宽高，此时可以封装在这里
+updated(){ this.computeHeight()}
+</code></pre><h4 id="7-activated"><a href="#7-activated" class="headerlink" title="7.activated"></a>7.activated</h4><p>在第二节中，我们提到了一个内置组件keep-alive,当此组件被激活的时候，会调用改方法</p>
+<h4 id="8-deactivated"><a href="#8-deactivated" class="headerlink" title="8.deactivated"></a>8.deactivated</h4><p>keep-alive组件被停用的时候，会调用改方法</p>
+<h4 id="9-beforeDestroy"><a href="#9-beforeDestroy" class="headerlink" title="9.beforeDestroy"></a>9.beforeDestroy</h4><p>此时的组件实例还未被销毁，我们可以利用组件的当前实例做一些操作</p>
+<h4 id="10-destroyed"><a href="#10-destroyed" class="headerlink" title="10.destroyed"></a>10.destroyed</h4><p>销毁整个Vue实例，回收所有的资源</p>
+
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>
