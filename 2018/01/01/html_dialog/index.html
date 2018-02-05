@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>html_dialog - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=HTML5>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">html_dialog</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2018-01-01</span>
+  </div>
+  <div class="post-content">
+    <h4 id="初识Dialog"><a href="#初识Dialog" class="headerlink" title="初识Dialog"></a>初识Dialog</h4><p>HTML5新推出的Dialog，感觉就和之前废弃的marquee差不多，下面就是它的一个基本例子</p>
+<pre><code>&lt;dialog&gt;
+        &lt;div style=&quot;width:300px;height:200px;&quot;&gt;我是新版的Dialog&lt;/div&gt;
+    &lt;/dialog&gt;
+</code></pre><h4 id="Dialog基础方法"><a href="#Dialog基础方法" class="headerlink" title="Dialog基础方法"></a>Dialog基础方法</h4><pre><code>let MyDialog = document.getElementsByTagName(&apos;dialog&apos;)[0];
+    MyDialog.showModal();//展示对话框
+    MyDialog.close();//关闭对话框
+   其实还有很多，想详细了解，很简单，复制上边代码试一下就可以了
+</code></pre><h4 id="Dialog事件"><a href="#Dialog事件" class="headerlink" title="Dialog事件"></a>Dialog事件</h4><pre><code>作为一个DOM元素，基本的事件都可以应用在Modal身上
+    let MyDialog = document.getElementsByTagName(&apos;dialog&apos;)[0];
+    MyDialog.onclick = function(){ console.log(&apos;我被点击了&apos;)};
+    MyDialog.onblur = function(){ console.log(&apos;我失去了焦点&apos;)};
+    MyDialog.onclose = function(){ console.log(&apos;我被关闭了&apos;)};
+</code></pre><h4 id="Dialog样式覆盖"><a href="#Dialog样式覆盖" class="headerlink" title="Dialog样式覆盖"></a>Dialog样式覆盖</h4><pre><code>一如我们覆盖默认的滚动条样式一样，我们可以设置其伪元素来达到覆盖样式的目的
+    dialog {
+        width: 300px;
+        height:200px
+    }
+    dialog::backdrop {
+        background-color: #dddddd;
+    }
+</code></pre><h4 id="Dialog支持度"><a href="#Dialog支持度" class="headerlink" title="Dialog支持度"></a>Dialog支持度</h4><pre><code>Chrhome已经支持了，其他浏览器，应该不久之后也会支持
+</code></pre><p><a href="https://caniuse.com/#search=dialog" target="_blank" rel="noopener">Dialog支持度</a>，<a href="https://www.w3.org/TR/html52/interactive-elements.html#the-dialog-element" target="_blank" rel="noopener">Dialog官方文档</a></p>
+
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/HTML5/">HTML5</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>

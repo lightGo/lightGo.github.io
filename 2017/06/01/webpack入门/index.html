@@ -9,7 +9,7 @@
   <title>webpack入门 - 小韩</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   
-  <meta name="keywords" content=webpack>
+  <meta name="keywords" content=前端构建>
   
   
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
@@ -45,12 +45,37 @@
     <span class="post-time">2017-06-01</span>
   </div>
   <div class="post-content">
-    <h3 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h3><pre><code>Webpack做了什么,它为前端的工程化开发提供了一套相对容易和完整的解决方案
-</code></pre><h3 id="1-entry"><a href="#1-entry" class="headerlink" title="1.entry"></a>1.entry</h3><h3 id="2-output"><a href="#2-output" class="headerlink" title="2.output"></a>2.output</h3><h3 id="3-module"><a href="#3-module" class="headerlink" title="3.module"></a>3.module</h3><h3 id="4-plugins"><a href="#4-plugins" class="headerlink" title="4.plugins"></a>4.plugins</h3>
+    <h3 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h3><p>Webpack本质是一个Js应用程序的静态模块打包器，它为前端的工程化开发提供了一套相对容易和完整的解决方<br>案，当webpack处理应用程序的时候，它会递归构建一个依赖关系图，然后进行打包任务<br>webpack有四个核心概念：entry、output、loader、plugins</p>
+<h3 id="一、entry-简单概念"><a href="#一、entry-简单概念" class="headerlink" title="一、entry(简单概念)"></a>一、entry(简单概念)</h3><p>entry作为webpack起始的入口，告诉webpack我的应用程序是从何处开始，entry的配置可以一个或多个起点<br>示例:</p>
+<pre><code>// 单入口
+    entry: &apos;./src/main.js&apos; // 你可以这样
+    entry: { main : &apos;./src/main.js&apos; } // 你还可以这样
+    // 多入口
+    entry: { main : &apos;./src/main.js&apos;, vendors: &apos;./src/lib/vendors.js&apos; } // 你可以这样
+    entry: { main : &apos;./src/main.js&apos;, vendors: &apos;./src/lib/vendors.js&apos; } // 你还可以这样
+</code></pre><h3 id="二、output-简单概念"><a href="#二、output-简单概念" class="headerlink" title="二、output(简单概念)"></a>二、output(简单概念)</h3><p>output作为webpack起始的出口，告诉webpack我的应用程序打包后的文件如何安置<br>示例:</p>
+<pre><code>// 分别对应是否多入口打包
+    output: { filename : &apos;app.js&apos;, path: &apos;./build/assets/js&apos; }
+    output: { filename : [name].js, publicPath: &apos;/assets/&apos;,path: __dirname + &apos;/build/assets/js&apos; }
+    output: { filename : [name].[chunkhash].js, publicPath: &apos;/assets/&apos;,path: __dirname + &apos;/build/assets/js&apos; }
+</code></pre><h3 id="3-loader-我认为的核心"><a href="#3-loader-我认为的核心" class="headerlink" title="3.loader(我认为的核心)"></a>3.loader(我认为的核心)</h3><p>loader用于对模块代码进行转换，如果使用Angular2，采用TypeScript进行编写，那么打包时就需要转为<br>JavaScript，亦或是我们的代码中采用scss less，那么都需要进行转换<br>示例:</p>
+<pre><code>// 分别对应是否多入口打包
+    module: {
+        rules: [
+          { test: /\.ts$/, use: &apos;ts-loader&apos; }
+        ]
+   }
+</code></pre><h3 id="4-plugins-我认为的核心"><a href="#4-plugins-我认为的核心" class="headerlink" title="4.plugins(我认为的核心)"></a>4.plugins(我认为的核心)</h3><p>plugins其实是弥补了一些loader无法完成的事情，比如压缩<br>示例:</p>
+<pre><code>// 分别对应是否多入口打包
+    plugins: {
+        new webpack.optimize.UglifyJsPlugin()
+   }
+</code></pre><p>这样看起来，是不是webpack很简单，好像没有很难</p>
+
   </div>
   <div class="post-footer">
     
-      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/前端构建/">前端构建</a></li></ul>
     
 
     <a href="#top" class="top">返回顶部</a>
