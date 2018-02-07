@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>浏览器渲染过程 - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=浏览器>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">浏览器渲染过程</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-05-28</span>
+  </div>
+  <div class="post-content">
+    <h3 id="1-浏览器简介"><a href="#1-浏览器简介" class="headerlink" title="1.浏览器简介"></a>1.浏览器简介</h3><p>我们常用的浏览器由以下几个部分组成</p>
+<pre><code>用户界面:地址栏,书签栏...简单说就是除了请求页面之外的内容
+    浏览器引擎:协调UI和渲染引擎
+    渲染引擎:展示请求内容
+    网络组件:负责网络调用
+    UI后端:绘制基本UI组件
+    JavaScript解析器:解析和执行JavaScript代码
+    数据存储:浏览器的本地存储
+</code></pre><h3 id="2-解析和渲染过程"><a href="#2-解析和渲染过程" class="headerlink" title="2.解析和渲染过程"></a>2.解析和渲染过程</h3><p>简单来说分为五部 loading-&gt;parsing-&gt;rending-&gt;Layout&gt;painting</p>
+<h3 id="2-1-loading"><a href="#2-1-loading" class="headerlink" title="2.1 loading"></a>2.1 loading</h3><p>loading指浏览器的加载顺序,它起始于navigationStart,终止于loadEventEnd</p>
+<pre><code>1.首先浏览器会判断,你是如何到达当前页面的,是重定向还是直接加载
+    if(unload)  unloadStart-&gt;unloadEnd
+    if(redirect)  redirectStart-&gt;redirectEnd
+    2.接下来浏览器会开始发起资源请求,首先判断是否有缓存,如果没有要做DNS解析查询
+    fetchStart: cache ? cache : domainLookupStart-&gt;domainLookupEnd
+    3.接下来使用解析的地址来建立TCP连接,发起http请求,等候资源
+    domain:connectStart-&gt;connectEnd,requestStart-&gt;responseStart
+    4.有了资源那么就开始加载DOM,直到DOM加载完毕
+    resource:DomLoading-&gt;DomContentLoaded
+</code></pre><h3 id="2-2-parsing"><a href="#2-2-parsing" class="headerlink" title="2.2 parsing"></a>2.2 parsing</h3><p>parsing是浏览器将HTML文档转换为DOM树并下载资源的过程</p>
+<pre><code>HTML解析器的任务是将HTML标记解析成解析树,解析树是由DOM元素和属性节点构成的树结构，根节点是为Document
+    解析主要包括两个部分:标记化和树的构建
+    (1)标记化:标记化是词法分析过程，将输入内容解析成多个标记
+    (2)树的构建:在创建解析器的同时，也会创建Document对象。在树构建阶段，以Document为根节点的DOM树也会不断进行修改，添加
+    各种元素。标记生成器发送的每个节点都会由树构建器进行处理。每个标记都有对应的DOM元素，这些元素会在接收到标记时创建
+    &lt;html&gt; --&gt; &lt;head&gt; --&gt; &lt;/head&gt; --&gt; &lt;body&gt; --&gt; &lt;/body&gt; -- &lt;/html&gt;
+
+    在HTML解析器解析HTML的同时,CSS 解析器会构建CSS规则树
+</code></pre><h3 id="2-3-rending"><a href="#2-3-rending" class="headerlink" title="2.3 rending"></a>2.3 rending</h3><p>在 DOM 树构建的同时，浏览器还会构建呈现树。这是由可视化元素按照其显示顺序而组成的树，也是文档的可视<br>化表示.呈现器是和 DOM 元素相对应的，但并非一一对应。非可视化的 DOM 元素不会插入呈现树中</p>
+<pre><code>这此阶段会发生重绘和回流
+    重绘:css属性改变,尺寸不变
+    回流:尺寸改变,虽然浏览器会异步增量回流,但是消耗也是很大的,所以成本特别高
+</code></pre><h3 id="2-4-Layout"><a href="#2-4-Layout" class="headerlink" title="2.4 Layout"></a>2.4 Layout</h3><p>Layout是计算页面上具体的展示位置</p>
+<pre><code>rending时呈现树构建完毕,此时并不包含位置和大小信息,计算这些值的过程就是布局.HTML 采用基于流的布局模型，这意味着大多
+数情况下只要一次遍历就能计算出几何信息。处于流中靠后位置元素通常不会影响靠前位置元素的几何特征，因此布局可以按从左至
+右、从上至下的顺序遍历文档。
+</code></pre><h3 id="2-5-painting"><a href="#2-5-painting" class="headerlink" title="2.5 painting"></a>2.5 painting</h3><p>painting才是最终的绘制页面</p>
+<pre><code>在绘制过程中，图形处理层可能使用通用CPU，也可能使用图形处理器GPU,当使用GPU用于图形渲染时，图形驱动软件会把任务分成多个
+部分，这样可以充分利用GPU的并行计算，用于在渲染过程中进行大量的浮点计算。
+</code></pre><h3 id="2-6-理顺一下思路"><a href="#2-6-理顺一下思路" class="headerlink" title="2.6 理顺一下思路"></a>2.6 理顺一下思路</h3><pre><code>(1）渲染引擎把HTML文档解析成DOM树，把标签转换成DOM节点。
+   (2）解析文档的同时，渲染引擎会把样式解析成CSS规则树
+   (3）渲染器是在文档解析和创建DOM节点后创建的，会计算DOM节点的样式信息(display:none除外),渲染树的节点。DOM树和CSS规则
+   树结合之后，形成了Style Content Tree,将其和渲染树关联，就完成了渲染树。
+   (4）渲染树构建出来之后，就进入布局阶段，为渲染树的每个节点分配一个屏幕上的确切坐标。
+   (5）最后遍历渲染树，通过用户界面后端将每个节点绘制出来。
+</code></pre>
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/浏览器/">浏览器</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>

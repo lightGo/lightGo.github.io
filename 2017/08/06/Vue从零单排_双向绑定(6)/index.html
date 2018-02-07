@@ -45,14 +45,14 @@
     <span class="post-time">2017-08-06</span>
   </div>
   <div class="post-content">
-    <h2 id="Vue原理"><a href="#Vue原理" class="headerlink" title="Vue原理"></a>Vue原理</h2><p>学东西要知其然，知其所以然，我用过Angular/AngularJs，以此对比，便于理解</p>
+    <h2 id="Vue原理"><a href="#Vue原理" class="headerlink" title="Vue原理"></a>Vue原理</h2><p>学东西要知其然，知其所以然，我用过AngularJs/Angular，以此对比，便于理解</p>
 <h3 id="1、数据绑定"><a href="#1、数据绑定" class="headerlink" title="1、数据绑定"></a>1、数据绑定</h3><p>它们都有双向绑定的概念，但是实现的方式是不同的，简要对比一下</p>
-<h4 id="1-1-Angular-脏值检查"><a href="#1-1-Angular-脏值检查" class="headerlink" title="1.1 Angular(脏值检查)"></a>1.1 Angular(脏值检查)</h4><pre><code>Angular其实就是Angular1，后来Angular2更名未AngularJs，Angular采用的是脏值检查，Angular 在 scope 模型上设置了一个监听队列，
-用来监听数据变化并更新 view 。每次绑定一个东西到 view 上时 AngularJS 就会往 $watch 队列里插入一条 $watch，用来检测它监视的
-model 里是否有变化的东西。当浏览器接收到可以被 angular context 处理的事件时，$digest 循环就会触发，遍历所有的 $watch，最后
+<h4 id="1-1-AngularJs-脏值检查"><a href="#1-1-AngularJs-脏值检查" class="headerlink" title="1.1 AngularJs(脏值检查)"></a>1.1 AngularJs(脏值检查)</h4><pre><code>AngularJs其实就是Angular1，后来Angular2更名未Angular，AngularJs采用的是脏值检查，AngularJs在 scope 模型上设置了一个监听队
+列，用来监听数据变化并更新 view 。每次绑定一个东西到 view 上时 AngularJS 就会往 $watch 队列里插入一条 $watch，用来检测它监视的
+model 里是否有变化的东西。当浏览器接收到可以被 AngularJs context 处理的事件时，$digest 循环就会触发，遍历所有的 $watch，最后
 $apply应用到dom，从而更新视图
-</code></pre><h4 id="1-2-AngularJs-脏值检查"><a href="#1-2-AngularJs-脏值检查" class="headerlink" title="1.2 AngularJs(脏值检查)"></a>1.2 AngularJs(脏值检查)</h4><pre><code>AngularJs是Angular的升级版，AngularJs中引入了zoneJs，将JavaScript的异步任务都包裹了一层，这些异步任务都将运行在ZoneJs的
-content中，这也是为什么AngularJs选择了拥抱浏览器原生的对象和方法的原因，当ZoneJs钩子被调用的时候，通知AngularJs，AngularJS
+</code></pre><h4 id="1-2-Angular-脏值检查"><a href="#1-2-Angular-脏值检查" class="headerlink" title="1.2 Angular(脏值检查)"></a>1.2 Angular(脏值检查)</h4><pre><code>Angular是AngularJs的升级版，Angular中引入了zoneJs，将JavaScript的异步任务都包裹了一层，这些异步任务都将运行在ZoneJs的
+content中，这也是为什么Angular选择了拥抱浏览器原生的对象和方法的原因，当ZoneJs钩子被调用的时候，通知Angular，Angular
 此时再做相应的脏值检查，更新DOM即可
 </code></pre><h4 id="1-3-Vue-数据劫持"><a href="#1-3-Vue-数据劫持" class="headerlink" title="1.3 Vue(数据劫持)"></a>1.3 Vue(数据劫持)</h4><pre><code>vue.js 则是采用数据劫持结合发布者-订阅者模式的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时
 发布消息给订阅者，触发相应的监听回调

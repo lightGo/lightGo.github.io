@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  
+  <title>JavaScript基础(1) - 小韩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  
+  <meta name="keywords" content=JavaScript>
+  
+  
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.02">
+  
+  
+    <link rel="alternate" href="/atom.xml " title="小韩" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+  <body>
+    <div class="container">
+      <header class="header">
+  <nav class="navbar">
+    <ul class="menu">
+      
+        <li class="menu-item">
+          <a href="/" class="menu-item-link">主页</a>
+        </li>
+      
+        <li class="menu-item">
+          <a href="/archives" class="menu-item-link">文章列表</a>
+        </li>
+      
+    </ul>
+  </nav>
+</header>
+<article class="post">
+  <div class="post-title">
+    <h1 class="article-title">JavaScript基础(1)</h1>
+  </div>
+   <div class="post-meta">
+    <span class="post-time">2017-03-01</span>
+  </div>
+  <div class="post-content">
+    <h3 id="1-prototype与proto的区别"><a href="#1-prototype与proto的区别" class="headerlink" title="1.prototype与proto的区别"></a>1.prototype与<em>proto</em>的区别</h3><pre><code>prototype是函数的属性
+    _proto_是对象的属性
+    函数也是对象，所以函数两者都有
+</code></pre><h3 id="2-什么是原型链"><a href="#2-什么是原型链" class="headerlink" title="2.什么是原型链"></a>2.什么是原型链</h3><pre><code>_proto_是对象的属性，在JS中一切都是对象，所以会形成一条链，递归访问最终到头，最终为null，
+当JS引擎查找对象的属性时，会先查找对象本身，之后顺着原型连向上查找
+</code></pre><h3 id="3-什么是闭包"><a href="#3-什么是闭包" class="headerlink" title="3.什么是闭包"></a>3.什么是闭包</h3><pre><code>闭包就是能够读取其他函数内部变量的函数,闭包就是将函数内部和函数外部连接起来的一座桥梁
+    function f(){
+　　　　var n=0;
+　　　　function d(){
+　　　　　　console.log(n);
+　　　　}
+　　　　return n;
+　　}
+
+闭包作用：1.读取函数内部变量；2.变量值不被回收，始终放在内存；
+注意点：便面过多使用，以免内存溢出
+</code></pre><h3 id="4-JavaScript事件流"><a href="#4-JavaScript事件流" class="headerlink" title="4.JavaScript事件流"></a>4.JavaScript事件流</h3><pre><code>1.事件捕捉阶段：事件开始由顶层对象触发，然后逐级向下传播，直到目标的元素；
+    2.处于目标阶段：处在绑定事件的元素上；
+    3.事件冒泡阶段：事件由具体的元素先接收，然后逐级向上传播，直到不具体的元素；
+</code></pre><h3 id="5-阻止事件冒泡"><a href="#5-阻止事件冒泡" class="headerlink" title="5.阻止事件冒泡"></a>5.阻止事件冒泡</h3><pre><code>阻止冒泡行为及默认行为
+IE：event.cancelBubble=true; event.returnValue=false;
+非IE：event.stopPropagation();event.preventDefault();
+</code></pre><h3 id="6-事件委托"><a href="#6-事件委托" class="headerlink" title="6.事件委托"></a>6.事件委托</h3><pre><code>了解了事件流,那么就不难理解事件委托,我们的DOM是有层级的,例如ul &gt; n*li事件委托就是当点击子元素的时候,利用事件流机制
+将子元素的操作委托到父元素来代理,用target判断具体的触发位置
+    someDom.addEventListener(&apos;click&apos;,function(ev){
+        console.log(&apos;当前点击区域为&apos;+target.tagName);
+    })
+</code></pre><h3 id="7-call、apply、bind区别"><a href="#7-call、apply、bind区别" class="headerlink" title="7.call、apply、bind区别"></a>7.call、apply、bind区别</h3><pre><code>三者均用于改变当前执行环境的this指向，call和apply参数列表不同,两者均为立即执行,bind可非立即调用
+bind可将多个参数的函数变成只带一个参数的函数
+a.call(a,b,c); a.apply(a,[b,c]);
+var sum = function(x,y) { return x + y };
+var succ = sum.bind(null, 1);
+succ(2);
+</code></pre><h3 id="8-同源策略"><a href="#8-同源策略" class="headerlink" title="8.同源策略"></a>8.同源策略</h3><pre><code>三点 ip:host:port
+</code></pre><h3 id="9-JSONP原理"><a href="#9-JSONP原理" class="headerlink" title="9.JSONP原理"></a>9.JSONP原理</h3><pre><code>同源策略是有限制的,但是我们却可以调用非本域名的script脚本,利用这个特性，服务端不再返回JSON格式的数据，而是返回一段调用
+某个函数的js代码，在src中进行了调用，这样实现了跨域
+</code></pre><h3 id="10-JS事件循环"><a href="#10-JS事件循环" class="headerlink" title="10.JS事件循环"></a>10.JS事件循环</h3><p>JavaScript是单线的，这一点我相信大家都知道，那么只能在一条线程上执行，是如何实现异步的呢，我们来<br>了解一下Js的执行机制</p>
+<pre><code>1.JS首先判断操作是否同步,同步继续执行,异步则进入event table
+    2.异步任务在event table中注册函数,当满足触发条件后,任务被推入event queue
+    3.同步任务一直执行,直到主线程空闲时,才会去event queue中查看是否有可执行的异步任务,如果有就推入主进程中
+</code></pre><p>异步任务还分为宏任务(I/O,setTimeout，setInterval，setImmediate)和微任务(Promise，process.nextTick)</p>
+
+  </div>
+  <div class="post-footer">
+    
+      <ul class="post-tag-list"><li class="post-tag-list-item"><a class="post-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+    
+
+    <a href="#top" class="top">返回顶部</a>
+  </div>
+</article>
+<footer>
+  <span class="author">
+    senceofhumor@126.com
+  </span>
+</footer>
+    </div>
+  </body>
+</html>
